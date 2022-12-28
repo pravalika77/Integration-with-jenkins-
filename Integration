@@ -1,0 +1,29 @@
+
+pipeline {
+    agent {
+        node {
+            label "dev"
+        }
+    }
+    stages {
+        stage("code") {
+            steps {
+                git "https://github.com/pravalika77/one.git"
+            }
+        }
+        stage("build") {
+            steps {
+            sh 'mvn clean package'
+            sh 'mv target/*.war target/webapp.war'
+            }
+        } 
+        stage("deploy"){
+            steps{
+                sh 'sudo cp  /home/ec2-user/jenkins/workspace/pipeline-1/target/webapp.war  /opt/apache-tomcat-9.0.70/webapps/'
+    
+              
+            }
+        }
+    }
+}
+
